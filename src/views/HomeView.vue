@@ -4,11 +4,18 @@ import Manager from "@/components/Manager.vue";
 
 <template>
   <h1>Task Manager</h1>
+  <body>
   <Manager/>
+  </body>
+
 </template>
 
 <style scoped>
-
+body{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 h1{
   text-align: center;
 }
