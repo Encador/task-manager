@@ -12,5 +12,9 @@ li {
   font-size: 18px;
   text-align: center;
   border: black solid 1px;
+  margin: 10px;
+}
+li:hover{
+  cursor: pointer;
 }
 </style>
