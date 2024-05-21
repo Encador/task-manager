@@ -15,7 +15,7 @@ function handleCheck():void{
   <li>
     <span id="checkbox" title="complete" :class="{checked: completed}" @click="handleCheck"></span>
     <span id="text" :class="{strikethrough: completed}">Task</span>
-    <span id="remove" title="remove">x</span>
+    <span id="remove" title="remove">remove</span>
   </li>
 </template>
 
@@ -40,6 +40,7 @@ li {
   align-items: center;
   height: 45px;
   padding-left: 5px;
+  padding-right: 5px;
 }
 
 #text{
@@ -63,15 +64,12 @@ li {
 }
 #remove{
   border: black solid 2px;
-  border-right: none;
-  width: 30px;
-  height: 110%;
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
-  padding: 0;
+  font-size: 13px;
+  padding: 2px;
 }
 #remove:hover{
   cursor: pointer;
