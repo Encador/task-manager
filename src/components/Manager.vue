@@ -2,7 +2,7 @@
 import Task from "@/components/Task.vue";
 import {ref} from "vue";
 
-const count = ref<number>(3)
+const count = ref<number>(5)
 
 </script>
 

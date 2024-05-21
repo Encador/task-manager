@@ -13,9 +13,9 @@ function handleCheck():void{
 
 <template>
   <li>
-    <span id="checkbox" :class="{checked: completed}" @click="handleCheck"></span>
+    <span id="checkbox" title="complete" :class="{checked: completed}" @click="handleCheck"></span>
     <span id="text" :class="{strikethrough: completed}">Task</span>
-    <span id="remove">x</span>
+    <span id="remove" title="remove">x</span>
   </li>
 </template>
 
@@ -55,8 +55,11 @@ li {
   height: 25px;
   cursor: pointer;
 }
-.checked{
-  background-color: #FF000099;
+#checkbox:hover{
+  background-color: #00FF0040;
+}
+#checkbox.checked{
+  background-color: #00FF0099;
 }
 #remove{
   border: black solid 2px;
