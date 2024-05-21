@@ -2,26 +2,38 @@
 import Task from "@/components/Task.vue";
 import {ref} from "vue";
 
-const count = ref<number>(5)
+const tasks = ref<(typeof Task)[]>([Task])
+tasks.value.push(Task)
+tasks.value.push(Task)
+
 
 </script>
 
 
 <template>
     <ul class="task-list">
-      <Task v-for="(item, index) in count" :key="index"/>
+      <Task v-for="(item, index) in tasks" :key="index" :task="item"/>
+      <button @click="tasks.push(Task)">+</button>
+      <button @click="tasks.pop()">-</button>
     </ul>
+
 </template>
 
 <style scoped>
 
+button{
+  width: 30px;
+  height: 20px;
+  margin: 10px;
+}
+
+
 .task-list {
   list-style-type: none;
   padding: 0;
-  margin: 50px 0 0;
   border-radius: 8px;
-  border: #00bd7e solid 3px;
-  max-width: 450px;
+  border: black solid 3px;
+  max-width: 400px;
   min-width: 300px;
   max-height: 600px;
   min-height: 300px;

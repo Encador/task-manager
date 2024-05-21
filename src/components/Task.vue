@@ -3,6 +3,7 @@
 import {ref} from "vue";
 
 const completed = ref<boolean>(false)
+const show = ref<boolean>(true)
 
 function handleCheck():void{
   completed.value = !completed.value;
@@ -12,10 +13,10 @@ function handleCheck():void{
 </script>
 
 <template>
-  <li>
+  <li v-if="show">
     <span id="checkbox" title="complete" :class="{checked: completed}" @click="handleCheck"></span>
-    <input type="text" placeholder="Task" :class="{strikethrough: completed}">
-    <span id="remove" title="remove">remove</span>
+    <input type="text" placeholder="Task" :class="{checked: completed}">
+    <span id="remove" title="remove" @click="show=false">remove</span>
   </li>
 </template>
 
@@ -29,20 +30,25 @@ function handleCheck():void{
 }
 
 input {
-  border: #00000020 solid 2px;
+  border: #00000020 dashed 2px;
   border-radius: 20px;
   padding: 2px;
   outline: none;
   font-size: 18px;
   text-align: center;
   width: 65%;
+  caret-color: black;
 }
 /*input::placeholder {
   color: inherit;
 }*/
 
-input.strikethrough{
+input.checked{
   text-decoration: line-through;
+}
+
+input:hover{
+  border: #00000050 dashed 2px;
 }
 
 
@@ -56,6 +62,7 @@ li {
   height: 45px;
   padding-left: 5px;
   padding-right: 5px;
+
 }
 
 #checkbox{
@@ -83,5 +90,7 @@ li {
 #remove:hover{
   cursor: pointer;
   background-color: #FF000099;
+  border-color: #A10A0D;
+  color: #540B0C;
 }
 </style>
