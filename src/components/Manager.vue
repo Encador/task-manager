@@ -2,7 +2,7 @@
 import Task from "@/components/Task.vue";
 import {ref} from "vue";
 
-const count = ref<number>(10)
+const count = ref<number>(3)
 
 </script>
 
@@ -20,10 +20,13 @@ const count = ref<number>(10)
   padding: 0;
   margin: 50px 0 0;
   border-radius: 8px;
-  border: #00bd7e solid 1px;
-  max-width: 500px;
-  min-width: 200px;
-  height: 50vh;
+  border: #00bd7e solid 3px;
+  max-width: 450px;
+  min-width: 300px;
+  max-height: 600px;
+  min-height: 300px;
+  width: 40vw;
+  height: 70vh;
   overflow-y: auto;
 }
 .task-list::-webkit-scrollbar {
