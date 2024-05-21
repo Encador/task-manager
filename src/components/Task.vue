@@ -14,7 +14,7 @@ function handleCheck():void{
 <template>
   <li>
     <span id="checkbox" title="complete" :class="{checked: completed}" @click="handleCheck"></span>
-    <span id="text" :class="{strikethrough: completed}">Task</span>
+    <input type="text" placeholder="Task" :class="{strikethrough: completed}">
     <span id="remove" title="remove">remove</span>
   </li>
 </template>
@@ -28,13 +28,28 @@ function handleCheck():void{
   -ms-user-select: none;
 }
 
+input {
+  border: #00000020 solid 2px;
+  border-radius: 20px;
+  padding: 2px;
+  outline: none;
+  font-size: 18px;
+  text-align: center;
+  width: 65%;
+}
+/*input::placeholder {
+  color: inherit;
+}*/
+
+input.strikethrough{
+  text-decoration: line-through;
+}
+
 
 li {
-  font-size: 18px;
   border: black solid 2px;
   margin: 10px;
   border-radius: 10px;
-  user-select: none;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -43,12 +58,6 @@ li {
   padding-right: 5px;
 }
 
-#text{
-  font-weight: bold;
-}
-.strikethrough {
-  text-decoration: line-through;
-}
 #checkbox{
   border: black solid 2px;
   border-radius: 50%;
@@ -69,7 +78,7 @@ li {
   align-items: center;
   justify-content: center;
   font-size: 13px;
-  padding: 2px;
+  padding: 3px;
 }
 #remove:hover{
   cursor: pointer;
