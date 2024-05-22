@@ -1,9 +1,10 @@
 <script setup lang="ts">
 
-import {ref} from "vue";
+import {ref, defineEmits} from "vue";
 
 const completed = ref<boolean>(false)
 const show = ref<boolean>(true)
+const emit = defineEmits(["remove"])
 
 function handleCheck():void{
   completed.value = !completed.value;
@@ -16,7 +17,7 @@ function handleCheck():void{
   <li v-if="show">
     <span id="checkbox" title="complete" :class="{checked: completed}" @click="handleCheck"></span>
     <input type="text" placeholder="Task" :class="{checked: completed}">
-    <span id="remove" title="remove" @click="show=false">remove</span>
+    <span id="remove" title="remove" @click="emit('remove')">remove</span>
   </li>
 </template>
 
@@ -34,10 +35,11 @@ input {
   border-radius: 20px;
   padding: 2px;
   outline: none;
-  font-size: 18px;
+  font-size: 15px;
   text-align: center;
   width: 65%;
   caret-color: black;
+  font-weight: bold;
 }
 /*input::placeholder {
   color: inherit;
@@ -48,7 +50,7 @@ input.checked{
 }
 
 input:hover{
-  border: #00000050 dashed 2px;
+  border: #00000069 dashed 2px;
 }
 
 
@@ -73,7 +75,7 @@ li {
   cursor: pointer;
 }
 #checkbox:hover{
-  background-color: #00FF0040;
+  background-color: #00FF0055;
 }
 #checkbox.checked{
   background-color: #00FF0099;
