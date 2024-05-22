@@ -4,28 +4,26 @@ import {ref, defineEmits, defineProps} from "vue";
 
 const completed = ref<boolean>(false)
 const show = ref<boolean>(true)
-const props = defineProps<{text: string}>();
-const emit = defineEmits(["remove"])
+const props = defineProps<{name: string}>();
+const emit = defineEmits(["remove", "toggle", "updated"])
 
-const text:string = props.text
+const text:string = props.name
 
 function handleCheck():void{
   completed.value = !completed.value;
   console.log("task checked")
-  console.log(text)
+  emit("toggle");
 }
 
-function onRemove():void{
-  emit("remove")
-}
+
 
 </script>
 
 <template>
   <li v-if="show">
     <span id="checkbox" title="complete" :class="{checked: completed}" @click="handleCheck"></span>
-    <input type="text" :placeholder=text :class="{checked: completed}">
-    <span id="remove" title="remove" @click="onRemove">remove</span>
+    <input type="text" :placeholder=props.name :class="{checked: completed}">
+    <span id="remove" title="remove" @click="emit('remove')">remove</span>
   </li>
 </template>
 
@@ -49,9 +47,8 @@ input {
   caret-color: black;
   font-weight: bold;
 }
-/*input::placeholder {
-  color: inherit;
-}*/
+
+
 
 input.checked{
   text-decoration: line-through;
@@ -59,6 +56,9 @@ input.checked{
 
 input:hover{
   border: #00000069 dashed 2px;
+}
+input:focus {
+  border: #0000FF96 dashed 2px;
 }
 
 

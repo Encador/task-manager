@@ -2,13 +2,12 @@
 import Task from "@/components/Task.vue";
 import {ref} from "vue";
 
-type Task = {id: string, name: string};
+type Task = {id: string, name: string, completed: boolean};
 
 const tasks = ref<Task[]>([]);
 
-function addTask() {
-
-  tasks.value.push({id: generateID(), name: "Task"} as Task);
+function addTask(name:string) {
+  tasks.value.push({id: generateID(), name: name, completed: false} as Task);
 }
 
 function generateID():string{
@@ -23,33 +22,69 @@ function removeTask(index:number):void{
   console.log(tasks.value);
 }
 
+function toggleTask(index:number){
+  tasks.value[index].completed = !tasks.value[index].completed;
+  console.log(tasks.value[index].completed)
+  removeTask(index);
+}
+
 
 </script>
 
 
 <template>
-    <ul class="task-list">
-      <Task :text='task.name' @remove="removeTask(index)" v-for="(task, index) in tasks" :key="task.id"/>
-      <button @click="addTask">+</button>
-      <button @click="tasks.pop()">-</button>
+  <div id="manager">
+
+    <ul id="task-list">
+      <Task :name='task.name' @remove="removeTask(index)" @toggle="toggleTask(index)" v-for="(task, index) in tasks" :key="task.id" />
     </ul>
+
+    <div id="controls">
+      <button @click="addTask('Task')">Add</button>
+    </div>
+
+  </div>
 
 </template>
 
 <style scoped>
 
-button{
-  width: 30px;
-  height: 20px;
-  margin: 10px;
+#manager {
+  border: #00000055 dashed 3px;
+  border-radius: 8px;
+}
+
+#controls{
+  display: flex;
+  justify-content: space-between;
+  /*
+  border: #00000055 dotted 3px;
+  */
+  border-top: #00000055 dashed 3px;
 }
 
 
-.task-list {
+#controls button{
+  width: 60px;
+  height: 30px;
+  margin: 10px;
+  border-radius: 8px;
+  background: none;
+  border: black solid 2px;
+}
+#controls button:hover{
+  background: #00000020;
+  cursor: pointer;
+}
+
+
+#task-list {
   list-style-type: none;
   padding: 0;
   border-radius: 8px;
-  border: #00000055 dashed 3px;
+  /*
+  border: #00000055 dotted 3px;
+  */
   max-width: 400px;
   min-width: 300px;
   max-height: 450px;
