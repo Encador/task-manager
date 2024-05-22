@@ -2,17 +2,18 @@
 import Task from "@/components/Task.vue";
 import {ref} from "vue";
 
-type Task = {id: number, name: string};
-const maxId = ref(1);
+type Task = {id: string, name: string};
 
 const tasks = ref<Task[]>([]);
 
 function addTask() {
-  const id = Date.now();
-  console.log(id)
-  tasks.value.push({id: id, name: "Task"} as Task);
+
+  tasks.value.push({id: generateID(), name: "Task"} as Task);
 }
 
+function generateID():string{
+  return Date.now().toString(16).toUpperCase() + Math.floor(Math.random()*100000).toString(16).toUpperCase();
+}
 
 
 function removeTask(index:number):void{
