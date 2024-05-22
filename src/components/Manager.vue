@@ -2,13 +2,24 @@
 import Task from "@/components/Task.vue";
 import {ref} from "vue";
 
-const tasks = ref<(typeof Task)[]>([Task])
-tasks.value.push(Task)
-tasks.value.push(Task)
+type Task = {id: number, name: string};
+const maxId = ref(1);
+
+const tasks = ref<Task[]>([]);
+
+function addTask() {
+  const id = Date.now();
+  console.log(id)
+  tasks.value.push({id: id, name: "Task"} as Task);
+}
+
+
 
 function removeTask(index:number):void{
-  console.log(index)
-  tasks.value.splice(index,1)
+  console.log(tasks.value[index]);
+  // tasks.value[1] = tasks.value[2];
+  tasks.value.splice(index, 1);
+  console.log(tasks.value);
 }
 
 
@@ -17,8 +28,8 @@ function removeTask(index:number):void{
 
 <template>
     <ul class="task-list">
-      <Task @remove="removeTask(index)" v-for="(item, index) in tasks" :key="index" :task="item"/>
-      <button @click="tasks.push(Task)">+</button>
+      <Task :text='task.name' @remove="removeTask(index)" v-for="(task, index) in tasks" :key="task.id"/>
+      <button @click="addTask">+</button>
       <button @click="tasks.pop()">-</button>
     </ul>
 
@@ -37,7 +48,7 @@ button{
   list-style-type: none;
   padding: 0;
   border-radius: 8px;
-  border: #000000BB solid 3px;
+  border: #00000055 dashed 3px;
   max-width: 400px;
   min-width: 300px;
   max-height: 450px;

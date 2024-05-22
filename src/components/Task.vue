@@ -1,14 +1,22 @@
 <script setup lang="ts">
 
-import {ref, defineEmits} from "vue";
+import {ref, defineEmits, defineProps} from "vue";
 
 const completed = ref<boolean>(false)
 const show = ref<boolean>(true)
+const props = defineProps<{text: string}>();
 const emit = defineEmits(["remove"])
+
+const text:string = props.text
 
 function handleCheck():void{
   completed.value = !completed.value;
   console.log("task checked")
+  console.log(text)
+}
+
+function onRemove():void{
+  emit("remove")
 }
 
 </script>
@@ -16,8 +24,8 @@ function handleCheck():void{
 <template>
   <li v-if="show">
     <span id="checkbox" title="complete" :class="{checked: completed}" @click="handleCheck"></span>
-    <input type="text" placeholder="Task" :class="{checked: completed}">
-    <span id="remove" title="remove" @click="emit('remove')">remove</span>
+    <input type="text" :placeholder=text :class="{checked: completed}">
+    <span id="remove" title="remove" @click="onRemove">remove</span>
   </li>
 </template>
 
