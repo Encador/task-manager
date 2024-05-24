@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import Task from "@/components/Task.vue";
-import {ref} from "vue";
+import {computed, ref} from "vue";
 
 type Task = {id: string, name: string, completed: boolean};
 
 const tasks = ref<Task[]>([]);
+const showCompletedTasks = ref<boolean>(true);
+const displayedTasks = computed(() => {return showCompletedTasks.value ? tasks.value : tasks.value.filter((task) => !task.completed);});
 
 function addTask(name:string) {
   tasks.value.push({id: generateID(), name: name, completed: false} as Task);
@@ -25,7 +27,6 @@ function removeTask(index:number):void{
 function toggleTask(index:number){
   tasks.value[index].completed = !tasks.value[index].completed;
   console.log(tasks.value[index].completed)
-  removeTask(index);
 }
 
 
@@ -36,11 +37,12 @@ function toggleTask(index:number){
   <div id="manager">
 
     <ul id="task-list">
-      <Task :name='task.name' @remove="removeTask(index)" @toggle="toggleTask(index)" v-for="(task, index) in tasks" :key="task.id" />
+      <Task :name='task.name' @remove="removeTask(index)" @toggle="toggleTask(index)" v-for="(task, index) in displayedTasks" :key="task.id" />
     </ul>
 
     <div id="controls">
-      <button @click="addTask('Task')">Add</button>
+      <button id="addTask" @click="addTask('Task')">Add</button>
+      <button :class="{showComplete: showCompletedTasks}" id="toggleComplete" @click="showCompletedTasks = !showCompletedTasks">Show Complete</button>
     </div>
 
   </div>
@@ -64,18 +66,40 @@ function toggleTask(index:number){
 }
 
 
-#controls button{
-  width: 60px;
+#addTask{
+  width: 70px;
   height: 30px;
   margin: 10px;
   border-radius: 8px;
   background: none;
-  border: black solid 2px;
+  border: black solid 3px;
+  font-weight: bold;
 }
-#controls button:hover{
+#addTask:hover{
   background: #00000020;
   cursor: pointer;
 }
+
+#toggleComplete{
+  width: 90px;
+  height: 30px;
+  margin: 10px;
+  border-radius: 8px;
+  background: none;
+  border: black solid 3px;
+  font-weight: bold;
+  font-size: 10px;
+}
+#toggleComplete:hover{
+  background: #00000020;
+  cursor: pointer;
+}
+#toggleComplete.showComplete{
+  /*border: #ffa500AA solid 3px;
+  color: #ffa500AA;*/
+  background-color: #ffa500AA;
+}
+
 
 
 #task-list {

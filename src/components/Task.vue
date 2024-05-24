@@ -52,6 +52,7 @@ input {
 
 input.checked{
   text-decoration: line-through;
+  color: #00000090;
 }
 
 input:hover{
