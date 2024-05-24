@@ -3,11 +3,11 @@
 import {ref, defineEmits, defineProps} from "vue";
 
 const completed = ref<boolean>(false)
-const show = ref<boolean>(true)
-const props = defineProps<{name: string}>();
+const props = defineProps<{name: string, completed: boolean}>();
 const emit = defineEmits(["remove", "toggle", "updated"])
 
 const text:string = props.name
+completed.value = props.completed
 
 function handleCheck():void{
   completed.value = !completed.value;
@@ -20,7 +20,7 @@ function handleCheck():void{
 </script>
 
 <template>
-  <li v-if="show">
+  <li>
     <span id="checkbox" title="complete" :class="{checked: completed}" @click="handleCheck"></span>
     <input type="text" :placeholder=props.name :class="{checked: completed}">
     <span id="remove" title="remove" @click="emit('remove')">remove</span>

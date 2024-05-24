@@ -37,7 +37,7 @@ function toggleTask(index:number){
   <div id="manager">
 
     <ul id="task-list">
-      <Task :name='task.name' @remove="removeTask(index)" @toggle="toggleTask(index)" v-for="(task, index) in displayedTasks" :key="task.id" />
+      <Task :name='task.name' :completed="task.completed" @remove="removeTask(index)" @toggle="toggleTask(index)" v-for="(task, index) in displayedTasks" :key="task.id" />
     </ul>
 
     <div id="controls">
