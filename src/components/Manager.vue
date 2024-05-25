@@ -17,16 +17,21 @@ function generateID():string{
 }
 
 
-function removeTask(index:number):void{
-  console.log(tasks.value[index]);
-  // tasks.value[1] = tasks.value[2];
-  tasks.value.splice(index, 1);
-  console.log(tasks.value);
+function removeTask(id:string):void{
+  tasks.value.splice(getTaskIndex(id), 1);
 }
 
-function toggleTask(index:number){
+function changeTaskName(id:string, name:string):void{
+  tasks.value[getTaskIndex(id)].name = name;
+}
+
+function toggleTask(id:string){
+  const index = getTaskIndex(id);
   tasks.value[index].completed = !tasks.value[index].completed;
-  console.log(tasks.value[index].completed)
+}
+
+function getTaskIndex(id:string):number{
+  return tasks.value.findIndex((task) => task.id === id);
 }
 
 
@@ -37,11 +42,11 @@ function toggleTask(index:number){
   <div id="manager">
 
     <ul id="task-list">
-      <Task :name='task.name' :completed="task.completed" @remove="removeTask(index)" @toggle="toggleTask(index)" v-for="(task, index) in displayedTasks" :key="task.id" />
+      <Task :id="task.id" :name='task.name' :completed="task.completed" @remove="removeTask" @toggle="toggleTask" @name-change="changeTaskName" v-for="(task, index) in displayedTasks" :key="task.id" />
     </ul>
 
     <div id="controls">
-      <button id="addTask" @click="addTask('Task')">Add</button>
+      <button id="addTask" @click="addTask('')">Add</button>
       <button :class="{showComplete: showCompletedTasks}" id="toggleComplete" @click="showCompletedTasks = !showCompletedTasks">Show Complete</button>
     </div>
 

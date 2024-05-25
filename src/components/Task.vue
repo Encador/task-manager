@@ -1,18 +1,17 @@
 <script setup lang="ts">
 
-import {ref, defineEmits, defineProps} from "vue";
+import {ref} from "vue";
 
-const completed = ref<boolean>(false)
-const props = defineProps<{name: string, completed: boolean}>();
-const emit = defineEmits(["remove", "toggle", "updated"])
+const completed = ref<boolean>(false);
+const props = defineProps<{id:string, name: string, completed: boolean}>();
+const emit = defineEmits(["remove", "toggle", "nameChange"]);
 
-const text:string = props.name
-completed.value = props.completed
+const name:string = props.name;
+completed.value = props.completed;
 
-function handleCheck():void{
+function toggleComplete():void{
   completed.value = !completed.value;
-  console.log("task checked")
-  emit("toggle");
+  emit("toggle", props.id);
 }
 
 
@@ -21,9 +20,9 @@ function handleCheck():void{
 
 <template>
   <li>
-    <span id="checkbox" title="complete" :class="{checked: completed}" @click="handleCheck"></span>
-    <input type="text" :placeholder=props.name :class="{checked: completed}">
-    <span id="remove" title="remove" @click="emit('remove')">remove</span>
+    <span id="checkbox" title="complete" :class="{checked: completed}" @click="toggleComplete"></span>
+    <input type="text" v-model="name" @input="emit('nameChange', id, name)" placeholder="Task" :class="{checked: completed}">
+    <span id="remove" title="remove" @click="emit('remove', id)">remove</span>
   </li>
 </template>
 
