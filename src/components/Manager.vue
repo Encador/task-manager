@@ -1,15 +1,30 @@
 <script setup lang="ts">
 import Task from "@/components/Task.vue";
-import {computed, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
+import {currentUser, pb} from "@/assets/pocketbase";
+import type {RecordModel} from "pocketbase";
 
 type Task = {id: string, name: string, completed: boolean};
 
-const tasks = ref<Task[]>([]);
+const tasks = ref<Array<Task | RecordModel>>([]);
 const showCompletedTasks = ref<boolean>(true);
 const displayedTasks = computed(() => {return showCompletedTasks.value ? tasks.value : tasks.value.filter((task) => !task.completed);});
 
-function addTask(name:string) {
-  tasks.value.push({id: generateID(), name: name, completed: false} as Task);
+async function addTask(name:string) {
+  if(currentUser.value) {
+    const data = {
+      "name": name,
+      "completed": false,
+      "user": currentUser.value.id
+    };
+
+    const record = await pb.collection("tasks").create(data).then(data => {
+      tasks.value.push(data)
+    }).catch((e: Error) => console.error(e));
+  }
+  else {
+    tasks.value.push({id: generateID(), name: name, completed: false} as Task);
+  }
 }
 
 function generateID():string{
@@ -32,6 +47,14 @@ function toggleTask(id:string){
 function getTaskIndex(id:string):number{
   return tasks.value.findIndex((task) => task.id === id);
 }
+
+async function getList(){
+  tasks.value = await pb.collection("tasks").getFullList();
+}
+
+onMounted(() => {
+  getList();
+});
 
 
 </script>
@@ -121,9 +144,9 @@ function getTaskIndex(id:string):number{
   height: 70vh;
   overflow-y: auto;
 }
-#task-list::-webkit-scrollbar {
+/*#task-list::-webkit-scrollbar {
   width: 0;
   height: 0;
-}
+}*/
 
 </style>
