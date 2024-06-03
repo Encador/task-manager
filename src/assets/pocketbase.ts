@@ -1,7 +1,11 @@
 import PocketBase, {type AuthModel} from "pocketbase"
 
-import {computed, type ComputedRef} from "vue";
+import {ref} from "vue";
 
-const pb:PocketBase = new PocketBase("http://68.154.50.85");
+export const pb:PocketBase = new PocketBase("http://68.154.50.85");
 
-export const currentUser:ComputedRef<AuthModel> = computed(() => {return pb.authStore.model})
+export const currentUser = ref<AuthModel>(pb.authStore.model)
+
+pb.authStore.onChange(() => {
+    currentUser.value = pb.authStore.model;
+})
