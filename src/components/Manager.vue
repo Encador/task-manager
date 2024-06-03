@@ -80,6 +80,11 @@ function generateID():string{
   return Date.now().toString(16).toUpperCase() + Math.floor(Math.random()*100000).toString(16).toUpperCase();
 }
 
+function logout(){
+  pb.authStore.clear();
+  window.location.reload();
+}
+
 onMounted(() => {
   getList();
 });
@@ -97,6 +102,8 @@ onMounted(() => {
 
     <div id="controls">
       <button id="addTask" @click="addTask('')">Add</button>
+      <button id="login" v-if="!currentUser" @click="$router.push('/account')">Login</button>
+      <button id="logout" v-if="currentUser" @click="logout">{{currentUser.username}}</button>
       <button :class="{showComplete: showCompleted}" id="toggleComplete" @click="toggleShowCompleted">Show Completed</button>
     </div>
 
@@ -120,38 +127,44 @@ onMounted(() => {
   border-top: #00000055 dashed 3px;
 }
 
+button{
+  border-radius: 8px;
+  background: none;
+  border: black solid 3px;
+  font-weight: bolder;
+  margin: 10px;
+}
+button:hover{
+  background: #00000020;
+  cursor: pointer;
+}
 
 #addTask{
   width: 70px;
   height: 30px;
-  margin: 10px;
-  border-radius: 8px;
-  background: none;
-  border: black solid 3px;
-  font-weight: bold;
 }
-#addTask:hover{
-  background: #00000020;
-  cursor: pointer;
+
+#login{
+  width: 70px;
 }
+#login:hover{
+  background: #0000FF55;
+}
+#logout{
+  width: 70px;
+}
+#logout:hover{
+  background: #FF000099;
+}
+
 
 #toggleComplete{
   width: 100px;
   height: 30px;
-  margin: 10px;
-  border-radius: 8px;
-  background: none;
-  border: black solid 3px;
-  font-weight: bold;
   font-size: 10px;
 }
-#toggleComplete:hover{
-  background: #00000020;
-  cursor: pointer;
-}
+
 #toggleComplete.showComplete{
-  /*border: #ffa500AA solid 3px;
-  color: #ffa500AA;*/
   background-color: #ffa500AA;
 }
 

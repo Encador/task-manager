@@ -16,10 +16,12 @@ body{
   display: flex;
   justify-content: center;
   align-items: center;
+
 }
 h1{
   text-align: center;
   margin: 20px;
+  align-items: center;
 }
 
 
