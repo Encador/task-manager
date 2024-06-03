@@ -16,7 +16,6 @@ function generateID():string{
   return Date.now().toString(16).toUpperCase() + Math.floor(Math.random()*100000).toString(16).toUpperCase();
 }
 
-
 function removeTask(id:string):void{
   tasks.value.splice(getTaskIndex(id), 1);
 }
@@ -42,7 +41,7 @@ function getTaskIndex(id:string):number{
   <div id="manager">
 
     <ul id="task-list">
-      <Task :id="task.id" :name='task.name' :completed="task.completed" @remove="removeTask" @toggle="toggleTask" @name-change="changeTaskName" v-for="(task, index) in displayedTasks" :key="task.id" />
+      <Task :id="task.id" :name='task.name' :completed="task.completed" @remove="removeTask" @toggle="toggleTask" @name-change="changeTaskName" v-for="task in displayedTasks" :key="task.id" />
     </ul>
 
     <div id="controls">
@@ -122,13 +121,9 @@ function getTaskIndex(id:string):number{
   height: 70vh;
   overflow-y: auto;
 }
-.task-list::-webkit-scrollbar {
+#task-list::-webkit-scrollbar {
   width: 0;
   height: 0;
 }
-
-
-
-
 
 </style>
