@@ -21,35 +21,53 @@ async function addTask(name:string) {
     const record = await pb.collection("tasks").create(data).then(data => {
       tasks.value.push(data)
     }).catch((e: Error) => console.error(e));
+
   }
   else {
     tasks.value.push({id: generateID(), name: name, completed: false} as Task);
   }
 }
 
-function generateID():string{
-  return Date.now().toString(16).toUpperCase() + Math.floor(Math.random()*100000).toString(16).toUpperCase();
+async function removeTask(id:string){
+  if(currentUser.value) {
+    await pb.collection("tasks").delete(id).then().catch((e: Error) => console.error(e));
+  }
+  tasks.value = tasks.value.filter((task) => task.id !== id);
 }
 
-function removeTask(id:string):void{
-  tasks.value.splice(getTaskIndex(id), 1);
+async function changeTaskName(id:string, name:string){
+  if(currentUser.value) {
+    const data = {
+      "name": name
+    };
+    // should add edit timer to reduce api calls
+    const record = await pb.collection("tasks").update(id, data).then().catch((e: Error) => console.error(e));
+  }
+  const task = tasks.value.find((task) => task.id === id);
+  if(task){
+    task.name = name;
+  }
 }
 
-function changeTaskName(id:string, name:string):void{
-  tasks.value[getTaskIndex(id)].name = name;
-}
-
-function toggleTask(id:string){
-  const index = getTaskIndex(id);
-  tasks.value[index].completed = !tasks.value[index].completed;
-}
-
-function getTaskIndex(id:string):number{
-  return tasks.value.findIndex((task) => task.id === id);
+async function toggleTask(id:string){
+  const task = tasks.value.find((task) => task.id === id);
+  if(task){
+    task.completed = !task.completed;
+    if(currentUser.value) {
+      const data = {
+        "completed": task.completed
+      };
+      const record = await pb.collection("tasks").update(id, data).then().catch((e: Error) => console.error(e));
+    }
+  }
 }
 
 async function getList(){
   tasks.value = await pb.collection("tasks").getFullList();
+}
+
+function generateID():string{
+  return Date.now().toString(16).toUpperCase() + Math.floor(Math.random()*100000).toString(16).toUpperCase();
 }
 
 onMounted(() => {
