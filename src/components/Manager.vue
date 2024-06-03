@@ -7,8 +7,8 @@ import type {RecordModel} from "pocketbase";
 type Task = {id: string, name: string, completed: boolean};
 
 const tasks = ref<Array<Task | RecordModel>>([]);
-const showCompletedTasks = ref<boolean>(true);
-const displayedTasks = computed(() => {return showCompletedTasks.value ? tasks.value : tasks.value.filter((task) => !task.completed);});
+const showCompleted= ref<boolean>(currentUser.value ? currentUser.value.showCompleted : false);
+const displayedTasks = computed(() => {return showCompleted.value ? tasks.value : tasks.value.filter((task) => !task.completed);});
 
 async function addTask(name:string) {
   if(currentUser.value) {
@@ -62,6 +62,16 @@ async function toggleTask(id:string){
   }
 }
 
+async function toggleShowCompleted(){
+  showCompleted.value = !showCompleted.value;
+  if(currentUser.value) {
+    const data = {
+      "showCompleted": showCompleted.value
+    };
+    const record = await pb.collection("users").update(currentUser.value.id, data).then().catch((e: Error) => console.error(e));
+  }
+}
+
 async function getList(){
   tasks.value = await pb.collection("tasks").getFullList();
 }
@@ -87,7 +97,7 @@ onMounted(() => {
 
     <div id="controls">
       <button id="addTask" @click="addTask('')">Add</button>
-      <button :class="{showComplete: showCompletedTasks}" id="toggleComplete" @click="showCompletedTasks = !showCompletedTasks">Show Complete</button>
+      <button :class="{showComplete: showCompleted}" id="toggleComplete" @click="toggleShowCompleted">Show Completed</button>
     </div>
 
   </div>
@@ -126,7 +136,7 @@ onMounted(() => {
 }
 
 #toggleComplete{
-  width: 90px;
+  width: 100px;
   height: 30px;
   margin: 10px;
   border-radius: 8px;
