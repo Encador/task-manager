@@ -102,7 +102,7 @@ onMounted(() => {
 
     <div id="controls">
       <button id="addTask" @click="addTask('')">Add</button>
-      <button id="login" v-if="!currentUser" @click="$router.push('/account')">Login</button>
+      <button id="login" v-if="!currentUser" @click="$router.push('/account')">Account</button>
       <button id="logout" v-if="currentUser" @click="logout">{{currentUser.username}}</button>
       <button :class="{showComplete: showCompleted}" id="toggleComplete" @click="toggleShowCompleted">Show Completed</button>
     </div>

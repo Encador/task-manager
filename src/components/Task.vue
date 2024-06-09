@@ -1,18 +1,22 @@
 <script setup lang="ts">
 
-import {ref} from "vue";
+import {ref, watch} from "vue";
 
 const completed = ref<boolean>(false);
 const props = defineProps<{id:string, name: string, completed: boolean}>();
 const emit = defineEmits(["remove", "toggle", "nameChange"]);
 
-const name:string = props.name;
+const name = ref<string>(props.name);
 completed.value = props.completed;
 
 function toggleComplete():void{
   completed.value = !completed.value;
   emit("toggle", props.id);
 }
+
+watch(name, (newName => {
+  emit('nameChange', props.id, newName);
+}))
 
 
 
@@ -21,7 +25,7 @@ function toggleComplete():void{
 <template>
   <li>
     <span id="checkbox" title="complete" :class="{checked: completed}" @click="toggleComplete"></span>
-    <input type="text" v-model="name" @input="emit('nameChange', id, name)" placeholder="Task" :class="{checked: completed}">
+    <input type="text" v-model="name" placeholder="Task" :class="{checked: completed}">
     <span id="remove" title="remove" @click="emit('remove', id)">remove</span>
   </li>
 </template>
